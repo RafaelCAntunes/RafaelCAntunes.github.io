@@ -6,6 +6,18 @@ background-repeat: no-repeat;
 background-size: cover;
 }
 
+
+#siteLang a:hover {
+color: blue;
+
+}
+
+
+#navbarSite{
+padding-left: 160px;
+
+}
+
 .profile{
 background-image:url("../images/desk.jpg");
 background-size: cover;
