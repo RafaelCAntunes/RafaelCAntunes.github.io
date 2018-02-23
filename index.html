@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS and Regular CSS -->
-     
-
+    
    <!-- <link href="node_modules/compiled_css/bootstrap.css" rel="stylesheet"> !-->
    <link href="bootstrap/bootstrap.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
@@ -21,9 +20,22 @@
      <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
 
     <title>Rafael de Camargo Antunes</title>
+
+
+<!-- script to use emailjs as "email sender"!-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("user_QLA61r8ZZhXfHpNxsWG26");
+   })();
+</script>
+
   </head>
 
   <body>
+
+
     
     <!-- Creating Navbar !-->
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-gradient-dark">
@@ -114,8 +126,11 @@
           <a href="https://www.linkedin.com/in/rafael-antunes-408a58b8/" rel="noopener noreferrer" target="_blank" data-toggle="tooltip" data-placement="left" title="Linkedin"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
          <!-- github !-->
           <a href="https://github.com/RafaelCAntunes" rel="noopener noreferrer" target="_blank" data-toggle="tooltip" data-placement="left" title="GitHub"><i class="fa fa-github-square" aria-hidden="true"></i></a>
+         
          <!-- send email !-->
-          <a href="mailto:rafaelcantunes3@gmail.com"  data-toggle="tooltip" data-placement="left" title="Send me an E-mail"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+         <span id="modalButton" role="button" data-toggle="modal" data-target="#modalForm">
+          <a data-toggle="modal tooltip" data-placement="left" title="Envie-me um E-mail"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+         </span>
          <!-- download resume !-->
           <a href="https://drive.google.com/uc?authuser=0&id=1dDBw43uY5x2HKxaheqjYR4XJYGYhFWEo&export=download" rel="noopener noreferrer" target="_blank"  data-toggle="tooltip" data-placement="left" title="Download my Resume"><i class="fa fa-download" aria-hidden="true"></i></a>
        
@@ -344,6 +359,78 @@
 
 
 
+<!--Modal called when you click on "send-me an email", it contains the form that we'll use to send the email !-->
+
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Formulário de Contato</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+        <form id="contactForm">
+      <div class="modal-body">
+        
+      
+         <div class="form-group">
+           <input type="text" class="form-control" name="sender_name" placeholder="Nome">
+         </div>
+
+         <div class="form-group">
+           <input type="text" class="form-control" name="reply_email" placeholder="E-mail">
+         </div>
+
+         <div class="form-group">
+           <textarea class="form-control" name="message_html" rows="6"></textarea>
+         </div>
+
+         
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn">Enviar</button>
+      </div>
+    </form>
+    </div>
+  </div>
+  </div>
+
+
+
+<!-- Script that get the data and send to emailjs  !-->
+
+
+<script>
+var myform = $('form#contactForm');
+myform.submit(function(event){ // submit is an form event, seens that any button you add in the form is considered an input and triggers the submit action
+event.preventDefault(); //event is just the parameter name that inherits the submit event parameters, when we call the preventDefault() function the submission is canceled 
+var formObj = myform.serializeArray().reduce(function(obj, item) { // transform the form into and array with serialize, then reduce (concatenate all the elements of the array)
+    obj[item.name] = item.value;
+     return obj;
+  
+}, {}) //{} = initial value parameter
+
+
+
+myform.find("button").text("Sending...");
+emailjs.send("Contato_Github","template_github",formObj) //send the email
+    .then(function(){ 
+       alert('enviado');
+        $('#modalForm').modal('hide'); //close modal
+        $('#contactForm')[0].reset(); //clear form inputs
+     }, function(err) {
+       alert("Send email failed!\r\n Response:\n " + JSON.stringify(err));
+       myform.find("button").text("Send");
+    });
+
+
+});
+
+</script>
+
 
 
  <!-- Optional JavaScript -->
@@ -359,5 +446,9 @@
     <script src="JS/bootstrap.min.js"></script>
 
   </body>
+
+
+
+
 
 </html>
